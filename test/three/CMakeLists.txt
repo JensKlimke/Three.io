@@ -1,6 +1,6 @@
 # set source files
 set(SOURCE_FILES
-        SimpleTest.cpp)
+        ThreeTest.cpp)
 
 # create target
 add_executable(Test ${SOURCE_FILES})
