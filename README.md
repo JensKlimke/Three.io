@@ -1,5 +1,7 @@
 # three.io
 
+[![CMake](https://github.com/JensKlimke/Three.io/actions/workflows/cmake.yml/badge.svg?branch=master)](https://github.com/JensKlimke/Three.io/actions/workflows/cmake.yml)
+
 This my almost empty base cmake project, which I use for starting a new project.
 
 ## Instructions
