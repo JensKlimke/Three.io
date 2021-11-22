@@ -21,20 +21,34 @@ jobs:
     steps:
     - name: Prepare Googletest ⭐️
       # install gtest
-      working-directory: /tmp
       run: |
-        cd /tmp && git clone --depth 1 --branch release-1.6.0 https://github.com/google/googletest.git
+        git clone --depth 1 --branch release-1.6.0 https://github.com/google/googletest.git
         cd googletest && mkdir build && cd build && cmake .. && make
         cd .. && sudo cp -a include/gtest /usr/include && sudo cp -a build/*.a /usr/lib
         cd .. && rm -rf googletest*
 
+    - name: Cache Protobuf ⭐️
+      # create or load cache
+      id: cache-protobuf
+      uses: actions/cache@v1
+      with:
+        path: protobuf
+        key: ${{ runner.os }}-protobuf
+
     - name: Prepare Protobuf ⭐️
       # install protobuf
-      working-directory: /tmp
+      if: steps.cache-protobuf.outputs.cache-hit != 'true'
       run: |
         git clone --depth 1 --branch v3.19.1 https://github.com/google/protobuf.git
         cd protobuf && git submodule update --init --recursive && ./autogen.sh
-        ./configure && make && make check && sudo make install && sudo ldconfig
+        ./configure && make && make check
+
+    - name: Install Protobuf ⭐️
+      # install cached protobuf
+      run: |
+        cd protobuf
+        sudo make install
+        sudo ldconfig
 
     - name: Checkout 🛎️
       # get repo
