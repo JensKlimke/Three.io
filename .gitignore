@@ -1,7 +1,5 @@
 # Project exclude paths
-bin
 cmake-build-debug
 build
-.idea
 
-*.meta
+.idea
