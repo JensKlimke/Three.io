@@ -4,6 +4,15 @@
 
 This is my almost empty base cmake project, which I use for starting a new project.
 
+## Features
+
+* ⭐️ Static library with professional folder structure
+* ⭐️ GoogleTest enabled with CMake option and CMake macros
+* ⭐️ Coverage enabled with CMake option (e.g. for use in CLion)
+* ⭐ Sample application in test folder to link library against
+* ⭐ GitHub Actions workflow for build and test
+* ⭐ GitHub Pages deployment (https://jensklimke.github.io/Three.io/) 
+
 ## Instructions
 
 ### Use act to simulate GitHub Action
@@ -14,7 +23,9 @@ This is my almost empty base cmake project, which I use for starting a new proje
 * Use `act -P ubuntu-20.04=ubuntu-github-20.04`
 
 ## TODOs
-* [ ] Create travis or gitflow workflow
-* [ ] Add branch state to this README
+* [x] Create travis or gitflow workflow
+* [x] Add branch state to this README
+* [ ] Install and link library to test application
+* [ ] CMake Package
 * [ ] Auto-add release tag
  
