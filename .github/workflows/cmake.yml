@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-    - name: Install gtest
+    - name: Prepare ⭐️
       # install gtest
       working-directory: /tmp
       run: |
@@ -28,18 +28,19 @@ jobs:
         cd .. && sudo cp -a include/gtest /usr/include && sudo cp -a build/*.a /usr/lib
         cd .. && rm -rf googletest*
 
-    - uses: actions/checkout@v2
+    - name: Checkout 🛎️
+      uses: actions/checkout@v2
 
-    - name: Configure CMake
+    - name: Configure CMake 🛠
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTING=ON
 
-    - name: Build
+    - name: Build 👷
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
-    - name: Test
+    - name: Test ✅
       working-directory: ${{github.workspace}}/build
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
