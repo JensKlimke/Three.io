@@ -15,6 +15,15 @@ This is my almost empty base cmake project, which I use for starting a new proje
 
 ## Instructions
 
+### CMake Configuration
+
+There are a few pre-defined CMake options in this project:
+
+* `BUILD_TESTING` (default `OFF`) - Enables gtest macros and the builds the tests (gtest must be installed on the system).
+* `ENABLE_COVERAGE` (default `OFF`) - Enables compiler flags to measure the code coverage (not measured in workflow).
+* `BUILD_APP` (default `OFF`) - Enables the example app (integrating the library) to be build.
+* `BUILD_PROTOBUF_EXAMPLES` (default `ON`) - The protobuf examples and tests are build when activated. 
+
 ### Use act to simulate GitHub Action
 
 * Build Dockerfile in `.github/ubuntu-20.04/Dockerfile` with command `docker build -t ubuntu-github-20.04 .` (don't forget to change to folder or specify Dockerfile instead of `.`)
