@@ -38,5 +38,13 @@ TEST(ThreeTest, Add) {
     EXPECT_EQ(0, three::add(&a, 1.0));
     EXPECT_DOUBLE_EQ(-1.0, a);
 
+    // check nullptr given
+    EXPECT_EQ(1, three::add(nullptr, 5.0));
+
+}
+
+TEST(ThreeTest, Constant) {
+
+    EXPECT_DOUBLE_EQ(0.5, three::constant());
 
 }
