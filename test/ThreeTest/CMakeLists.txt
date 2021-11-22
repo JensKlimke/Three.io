@@ -1,9 +1,5 @@
-# set source files
-set(SOURCE_FILES
-        ThreeTest.cpp)
-
 # create target
-add_executable(ThreeTest ${SOURCE_FILES})
+add_executable(ThreeTest ThreeTest.cpp)
 
 # include directory
 target_include_directories(ThreeTest PRIVATE
