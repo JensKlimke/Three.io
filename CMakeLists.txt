@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.5)
 
 # set project title
 project(Three.io VERSION 0.1.1)
@@ -10,6 +10,7 @@ set(CMAKE_CXX_STANDARD 20)
 option(BUILD_TESTING "Sets or unsets the option to generate the test target" OFF)
 option(ENABLE_COVERAGE "Enable the coverage check of the module" OFF)
 option(BUILD_APP "Enable the app to be build" OFF)
+option(BUILD_PROTOBUF_EXAMPLES "Enable the protobuf feature and build examples" ON)
 
 
 # include directory
