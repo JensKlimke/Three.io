@@ -18,11 +18,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-// Created by Jens Klimke on 14.11.2019.
-//
 
 
-#include "three.h"
+
+#include "three/three.h"
 
 #ifdef __cplusplus
 extern "C" {

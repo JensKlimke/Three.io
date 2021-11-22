@@ -19,8 +19,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-// Created by Jens Klimke on 2019-04-25.
-//
+
 
 #include <gtest/gtest.h>
 #include <three/three.h>
