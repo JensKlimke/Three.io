@@ -11,3 +11,4 @@ RUN apt-get update && apt-get install -y git
 
 # install build toolchain
 RUN apt-get update && apt-get install -y g++ build-essential cmake autoconf libtool
+RUN apt-get update && apt-get install -y nodejs
