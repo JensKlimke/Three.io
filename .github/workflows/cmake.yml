@@ -45,28 +45,30 @@ jobs:
         sudo cp -a build/*.a /usr/lib
         rm -rf googletest*
 
-#    - name: Cache Protobuf ⭐️
-#      # create or load cache
-#      id: cache-protobuf
-#      uses: actions/cache@v2
-#      with:
-#        path: protobuf
-#        key: ${{ runner.os }}-protobuf
-#
-#    - name: Prepare Protobuf ⭐️
-#      # install protobuf
-#      if: steps.cache-protobuf.outputs.cache-hit != 'true'
-#      run: |
-#        git clone --depth 1 --branch v3.19.1 https://github.com/google/protobuf.git
-#        cd protobuf && git submodule update --init --recursive && ./autogen.sh
-#        ./configure && make && make check
-#
-#    - name: Install Protobuf ⭐️
-#      # install cached protobuf
-#      run: |
-#        cd protobuf
-#        sudo make install
-#        sudo ldconfig
+    - name: Cache Protobuf ⭐️
+      # create or load cache
+      id: cache-protobuf
+      uses: actions/cache@v2
+      with:
+        path: /tmp/protobuf
+        key: ${{ runner.os }}-protobuf
+
+    - name: Prepare Protobuf ⭐️
+      # install protobuf
+      working-directory: /tmp
+      if: steps.cache-protobuf.outputs.cache-hit != 'true'
+      run: |
+        git clone --depth 1 --branch v3.19.1 https://github.com/google/protobuf.git
+        cd protobuf && git submodule update --init --recursive && ./autogen.sh
+        ./configure && make && make check
+
+    - name: Install Protobuf ⭐️
+      # install cached protobuf
+      working-directory: /tmp
+      run: |
+        cd protobuf
+        sudo make install
+        sudo ldconfig
 
     - name: Checkout 🛎️
       # get repo
@@ -74,7 +76,7 @@ jobs:
 
     - name: Configure CMake 🛠
       # configure CMake project
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTING=ON -DBUILD_PROTOBUF_EXAMPLES=OFF
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTING=ON -DBUILD_PROTOBUF_EXAMPLES=ON
 
     - name: Build 👷
       # build target
