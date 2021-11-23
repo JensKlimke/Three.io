@@ -1,11 +1,6 @@
 # create target
 add_executable(ThreeTest ThreeTest.cpp)
 
-# include directory
-target_include_directories(ThreeTest PRIVATE
-        ${PROJECT_SOURCE_DIR}/src       # for sources
-        ${PROJECT_SOURCE_DIR}/include)  # for libraries
-
 # link library to target
 target_link_libraries(ThreeTest PRIVATE three)
 
