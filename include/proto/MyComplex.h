@@ -1,4 +1,5 @@
-// Copyright (c) 2019 Jens Klimke <jens.klimke@rwth-aachen.de>. All rights reserved.
+//
+// Copyright (c) 2020 Jens Klimke <jens.klimke@rwth-aachen.de>. All rights reserved.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,34 +21,25 @@
 //
 
 
+#include <iostream>
 
-#include "three/three.h"
+class MyComplex {
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+protected:
 
+    double real = 0.0;
+    double imag = 0.0;
 
-int add(double *a, double b) {
+public:
 
-    // check
-    if (a == nullptr)
-        return 1;
+    MyComplex() = default;
+    ~MyComplex() = default;
 
-    // operation
-    *a += b;
+    explicit MyComplex(std::string &&filename);
 
-    return 0;
+    [[nodiscard]] double angle() const;
 
-}
+    void save(const std::string &filename) const;
+    void load(const std::string &filename);
 
-
-float constant() {
-
-    return 0.5f;
-
-}
-
-#ifdef __cplusplus
-}
-#endif
+};

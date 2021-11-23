@@ -1,3 +1,4 @@
+//
 // Copyright (c) 2019 Jens Klimke <jens.klimke@rwth-aachen.de>. All rights reserved.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,34 +21,30 @@
 //
 
 
+#include <gtest/gtest.h>
+#include <three/three.h>
 
-#include "three/three.h"
+TEST(ThreeTest, Add) {
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+    double a;
 
+    // check adding zeros
+    a = 0.0;
+    EXPECT_EQ(0, three::add(&a, 0.0));
+    EXPECT_DOUBLE_EQ(0.0, a);
 
-int add(double *a, double b) {
+    // check adding other number
+    a = -2.0;
+    EXPECT_EQ(0, three::add(&a, 1.0));
+    EXPECT_DOUBLE_EQ(-1.0, a);
 
-    // check
-    if (a == nullptr)
-        return 1;
-
-    // operation
-    *a += b;
-
-    return 0;
-
-}
-
-
-float constant() {
-
-    return 0.5f;
+    // check nullptr given
+    EXPECT_EQ(1, three::add(nullptr, 5.0));
 
 }
 
-#ifdef __cplusplus
+TEST(ThreeTest, Constant) {
+
+    EXPECT_DOUBLE_EQ(0.5, three::constant());
+
 }
-#endif

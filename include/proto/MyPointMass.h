@@ -1,4 +1,5 @@
-// Copyright (c) 2019 Jens Klimke <jens.klimke@rwth-aachen.de>. All rights reserved.
+//
+// Copyright (c) 2020 Jens Klimke <jens.klimke@rwth-aachen.de>. All rights reserved.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,34 +21,28 @@
 //
 
 
+#include <iostream>
 
-#include "three/three.h"
+class MyPointMass {
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+protected:
 
+    double _force = 0.0;
+    double _acceleration = 0.0;
+    double _velocity = 0.0;
+    double _position = 0.0;
+    double _mass = 1.0;
+    double _drag = 0.0;
 
-int add(double *a, double b) {
+public:
 
-    // check
-    if (a == nullptr)
-        return 1;
+    MyPointMass() = default;
+    ~MyPointMass() = default;
 
-    // operation
-    *a += b;
+    void setParameters(double mass, double drag);
+    void applyForceOverTime(double force, double deltaTime);
 
-    return 0;
+    [[nodiscard]] std::string toJSON() const;
+    void fromJSON(const std::string &json);
 
-}
-
-
-float constant() {
-
-    return 0.5f;
-
-}
-
-#ifdef __cplusplus
-}
-#endif
+};

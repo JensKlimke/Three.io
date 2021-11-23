@@ -1,3 +1,4 @@
+//
 // Copyright (c) 2019 Jens Klimke <jens.klimke@rwth-aachen.de>. All rights reserved.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,35 +20,53 @@
 // SOFTWARE.
 //
 
+#include <gtest/gtest.h>
+#include <proto/MyPointMass.h>
+
+class ProtoPointMassTest : public testing::Test, public MyPointMass {
+
+protected:
+
+    std::string setup = R"({"input":{},"state":{"acceleration":-1,"velocity":9,"position":23.5},"parameters":{"mass":1,"drag":0.1}})";
+
+};
 
 
-#include "three/three.h"
+TEST_F(ProtoPointMassTest, GenerateJSON) {
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+    // set parameters and calculate
+    setParameters(1.0, 0.1);
+    applyForceOverTime(10.0, 1.0);
+    applyForceOverTime(0.0, 1.0);
 
+    // check results
+    EXPECT_NEAR(_force, 0.0, 1e-15);
+    EXPECT_NEAR(_acceleration, -1.0, 1e-15);
+    EXPECT_NEAR(_velocity, 9.0, 1e-15);
+    EXPECT_NEAR(_position, 23.5, 1e-15);
+    EXPECT_NEAR(_mass, 1.0, 1e-15);
+    EXPECT_NEAR(_drag, 0.1, 1e-15);
 
-int add(double *a, double b) {
+    // export to json
+    auto json = toJSON();
 
-    // check
-    if (a == nullptr)
-        return 1;
-
-    // operation
-    *a += b;
-
-    return 0;
+    // check json against setup string
+    EXPECT_EQ(setup, json);
 
 }
 
 
-float constant() {
+TEST_F(ProtoPointMassTest, LoadJSON) {
 
-    return 0.5f;
+    // load setup from JSON
+    fromJSON(setup);
+
+    // check results
+    EXPECT_NEAR(_force, 0.0, 1e-15);
+    EXPECT_NEAR(_acceleration, -1.0, 1e-15);
+    EXPECT_NEAR(_velocity, 9.0, 1e-15);
+    EXPECT_NEAR(_position, 23.5, 1e-15);
+    EXPECT_NEAR(_mass, 1.0, 1e-15);
+    EXPECT_NEAR(_drag, 0.1, 1e-15);
 
 }
-
-#ifdef __cplusplus
-}
-#endif

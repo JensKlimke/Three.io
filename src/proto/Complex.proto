@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package example;
+
+message Complex {
+
+    double real = 1;
+    double imag = 2;
+
+}

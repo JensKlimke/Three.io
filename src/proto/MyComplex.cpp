@@ -1,5 +1,4 @@
-//
-// Copyright (c) 2019 Jens Klimke <jens.klimke@rwth-aachen.de>. All rights reserved.
+// Copyright (c) 2020 Jens Klimke.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -19,25 +18,53 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-// Created by Jens Klimke on 2019-04-25.
-//
 
-#include <gtest/gtest.h>
-#include <three/three.h>
+#include <fstream>
+#include <cmath>
+#include "Complex.pb.h"
+#include "proto/MyComplex.h"
 
-TEST(ThreeTest, Add) {
+typedef example::Complex Complex;
 
-    double a;
+void MyComplex::save(const std::string &filename) const {
 
-    // check adding zeros
-    a = 0.0;
-    EXPECT_EQ(0, three::add(&a, 0.0));
-    EXPECT_DOUBLE_EQ(0.0, a);
+    // data instance
+    Complex complex;
 
-    // check adding other number
-    a = -2.0;
-    EXPECT_EQ(0, three::add(&a, 1.0));
-    EXPECT_DOUBLE_EQ(-1.0, a);
+    // set parameters
+    complex.set_real(this->real);
+    complex.set_imag(this->imag);
 
+    std::fstream fs(filename, std::ios::out);
+    complex.SerializeToOstream(&fs);
+
+}
+
+
+void MyComplex::load(const std::string &filename) {
+
+    // data instance
+    Complex complex;
+
+    // read stream
+    std::fstream fs(filename, std::ios::in);
+    complex.ParseFromIstream(&fs);
+
+    // set parameters
+    this->real = complex.real();
+    this->imag = complex.imag();
+
+}
+
+
+double MyComplex::angle() const {
+
+    return std::atan2(imag, real);
+
+}
+
+MyComplex::MyComplex(std::string &&filename) {
+
+    load(filename);
 
 }

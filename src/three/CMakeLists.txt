@@ -6,11 +6,6 @@ set(SOURCE_FILES
 add_library(three STATIC ${SOURCE_FILES})
 add_definitions(-DTHREE_EXPORTS)
 
-# include directory
-target_include_directories(three PRIVATE
-        ${PROJECT_SOURCE_DIR}/include/three # headers for library
-        )
-
 # install target
 install(TARGETS three
         ARCHIVE DESTINATION lib)

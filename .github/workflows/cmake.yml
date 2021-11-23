@@ -2,7 +2,7 @@ name: CMake
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, feature-protobuf ]
   pull_request:
     branches: [ master ]
 
@@ -12,21 +12,63 @@ env:
 
 jobs:
   build:
-    # The CMake configure and build commands are platform agnostic and should work equally
+    # The CMake configure and build commands are platform-agnostic and should work equally
     # well on Windows or Mac.  You can convert this to a matrix build if you need
     # cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ubuntu-20.04
 
     steps:
-    - name: Prepare ⭐️
+
+    - name: Prepare Cache GoogleTest ⭐️
+      # create or load cache
+      id: cache-googletest
+      uses: actions/cache@v2
+      with:
+        path: /tmp/googletest
+        key: ${{ runner.os }}-googletest
+
+    - name: Prepare Googletest ⭐️
+      # build gtest
+      working-directory: /tmp
+      if: steps.cache-googletest.outputs.cache-hit != 'true'
+      run: |
+        git clone --depth 1 --branch release-1.6.0 https://github.com/google/googletest.git
+        cd googletest && mkdir build && cd build && cmake .. && make
+
+    - name: Install Googletest ⭐️
       # install gtest
       working-directory: /tmp
       run: |
-        cd /tmp && git clone --depth 1 --branch release-1.6.0 https://github.com/google/googletest.git
-        cd googletest && mkdir build && cd build && cmake .. && make
-        cd .. && sudo cp -a include/gtest /usr/include && sudo cp -a build/*.a /usr/lib
-        cd .. && rm -rf googletest*
+        cd googletest
+        sudo cp -a include/gtest /usr/include
+        sudo cp -a build/*.a /usr/lib
+        rm -rf googletest*
+
+    - name: Cache Protobuf ⭐️
+      # create or load cache
+      id: cache-protobuf
+      uses: actions/cache@v2
+      with:
+        path: /tmp/protobuf
+        key: ${{ runner.os }}-protobuf
+
+    - name: Prepare Protobuf ⭐️
+      # install protobuf
+      working-directory: /tmp
+      if: steps.cache-protobuf.outputs.cache-hit != 'true'
+      run: |
+        git clone --depth 1 --branch v3.19.1 https://github.com/google/protobuf.git
+        cd protobuf && git submodule update --init --recursive && ./autogen.sh
+        ./configure && make && make check
+
+    - name: Install Protobuf ⭐️
+      # install cached protobuf
+      working-directory: /tmp
+      run: |
+        cd protobuf
+        sudo make install
+        sudo ldconfig
 
     - name: Checkout 🛎️
       # get repo
@@ -34,7 +76,7 @@ jobs:
 
     - name: Configure CMake 🛠
       # configure CMake project
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTING=ON
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTING=ON -DBUILD_PROTOBUF_EXAMPLES=ON
 
     - name: Build 👷
       # build target
