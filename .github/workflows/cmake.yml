@@ -23,7 +23,7 @@ jobs:
     - name: Prepare Cache GoogleTest ⭐️
       # create or load cache
       id: cache-googletest
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: googletest
         key: ${{ runner.os }}-googletest
@@ -46,7 +46,7 @@ jobs:
 #    - name: Cache Protobuf ⭐️
 #      # create or load cache
 #      id: cache-protobuf
-#      uses: actions/cache@v1
+#      uses: actions/cache@v2
 #      with:
 #        path: protobuf
 #        key: ${{ runner.os }}-protobuf
