@@ -1,4 +1,5 @@
-// Copyright (c) 2020 Jens Klimke.
+//
+// Copyright (c) 2020 Jens Klimke <jens.klimke@rwth-aachen.de>. All rights reserved.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -19,52 +20,29 @@
 // SOFTWARE.
 //
 
-#include <fstream>
-#include <cmath>
-#include "Complex.pb.h"
-#include "proto/MyComplex.h"
 
-typedef example::Complex Complex;
+#include <iostream>
 
-void MyComplex::save(const std::string &filename) const {
+class MyPointMass {
 
-    // data instance
-    Complex complex;
+protected:
 
-    // set parameters
-    complex.set_real(this->real);
-    complex.set_imag(this->imag);
+    double _force = 0.0;
+    double _acceleration = 0.0;
+    double _velocity = 0.0;
+    double _position = 0.0;
+    double _mass = 1.0;
+    double _drag = 0.0;
 
-    std::fstream fs(filename, std::ios::out);
-    complex.SerializeToOstream(&fs);
+public:
 
-}
+    MyPointMass() = default;
+    ~MyPointMass() = default;
 
+    void setParameters(double mass, double drag);
+    void applyForceOverTime(double force, double deltaTime);
 
-void MyComplex::load(const std::string &filename) {
+    [[nodiscard]] std::string toJSON() const;
+    void fromJSON(const std::string &json);
 
-    // data instance
-    Complex complex;
-
-    // read stream
-    std::fstream fs(filename, std::ios::in);
-    complex.ParseFromIstream(&fs);
-
-    // set parameters
-    this->real = complex.real();
-    this->imag = complex.imag();
-
-}
-
-
-double MyComplex::angle() const {
-
-    return std::atan2(imag, real);
-
-}
-
-MyComplex::MyComplex(std::string &&filename) {
-
-    load(filename);
-
-}
+};

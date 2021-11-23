@@ -2,11 +2,15 @@
 find_package(Protobuf REQUIRED)
 
 # generate proto files
-protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS Models.proto)
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
+        Complex.proto
+        PointMass.proto
+        )
 
 # create target
 add_library(proto STATIC
         MyComplex.cpp
+        MyPointMass.cpp
         ${PROTO_SRCS} ${PROTO_HDRS}
         )
 

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package example;
+
+message DynamicalState {
+    double acceleration = 1;
+    double velocity = 2;
+    double position = 3;
+}
+
+message Input {
+    double force = 1;
+}
+
+message Parameters {
+    double mass = 1;
+    double drag = 2;
+}
+
+message PointMass {
+    Input input = 1;
+    DynamicalState state = 2;
+    Parameters parameters = 3;
+}

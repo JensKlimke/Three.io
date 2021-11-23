@@ -1,5 +1,8 @@
 # create target
-add_executable(ProtoTest ProtoTest.cpp)
+add_executable(ProtoTest
+        ProtoComplexTest.cpp
+        ProtoPointMassTest.cpp
+        )
 
 # link library
 target_link_libraries(ProtoTest PRIVATE proto)

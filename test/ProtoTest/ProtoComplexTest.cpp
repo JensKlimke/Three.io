@@ -24,7 +24,7 @@
 #include <gtest/gtest.h>
 #include <proto/MyComplex.h>
 
-class ModelProtoTest : public testing::Test, public MyComplex {
+class ProtoComplexTest : public testing::Test, public MyComplex {
 
 protected:
 
@@ -56,7 +56,7 @@ protected:
 };
 
 
-TEST_F(ModelProtoTest, CalculateAngle) {
+TEST_F(ProtoComplexTest, CalculateAngle) {
 
     north();
     EXPECT_DOUBLE_EQ(0.0, real);
@@ -85,7 +85,7 @@ TEST_F(ModelProtoTest, CalculateAngle) {
 
 }
 
-TEST_F(ModelProtoTest, SaveAndLoadModel) {
+TEST_F(ProtoComplexTest, SaveAndLoadModel) {
 
 
     north();
