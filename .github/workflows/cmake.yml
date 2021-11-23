@@ -30,6 +30,7 @@ jobs:
 
     - name: Prepare Googletest ⭐️
       # build gtest
+      working-directory: /tmp
       if: steps.cache-googletest.outputs.cache-hit != 'true'
       run: |
         git clone --depth 1 --branch release-1.6.0 https://github.com/google/googletest.git
@@ -37,6 +38,7 @@ jobs:
 
     - name: Install Googletest ⭐️
       # install gtest
+      working-directory: /tmp
       run: |
         cd googletest
         sudo cp -a include/gtest /usr/include
