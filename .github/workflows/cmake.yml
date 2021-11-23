@@ -25,7 +25,7 @@ jobs:
       id: cache-googletest
       uses: actions/cache@v2
       with:
-        path: googletest
+        path: /tmp/googletest
         key: ${{ runner.os }}-googletest
 
     - name: Prepare Googletest ⭐️
