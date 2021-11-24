@@ -56,6 +56,10 @@ jobs:
         path: virt-env
         key: virt_env-${{ hashFiles('pip-requirements.txt') }}
 
+    - name: Checkout 🛎️
+      # get repo
+      uses: actions/checkout@v2
+
     - name: Setup Python Dependencies ⭐️
       # setup python dependencies
       run: |
@@ -65,10 +69,6 @@ jobs:
         source virt-env/bin/activate
         pip install -r pip-requirements.txt
         deactivate
-
-    - name: Checkout 🛎️
-      # get repo
-      uses: actions/checkout@v2
 
     - name: Configure CMake 🛠
       # configure CMake project
