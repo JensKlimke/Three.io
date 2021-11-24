@@ -56,9 +56,7 @@ jobs:
       working-directory: /tmp
       if: steps.cache-jupyter.outputs.cache-hit != 'true'
       run: |
-        python --version
-        pip --version
-        jupyter notebook --version
+        pip install jupyterlab numpy matplotlib pandas
 
     - name: Install Googletest ⭐️
       # install gtest

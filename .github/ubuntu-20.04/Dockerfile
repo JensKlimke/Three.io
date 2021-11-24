@@ -12,4 +12,4 @@ RUN apt-get update && apt-get install -y nodejs tar zstd
 
 # install build toolchain
 RUN apt-get update && apt-get install -y g++ build-essential cmake autoconf libtool
-RUN apt-get update && apt-get install -y python3 python3-pip
+RUN apt-get update && apt-get install -y python python3-pip
