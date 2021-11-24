@@ -54,12 +54,12 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{ env.pythonLocation }}
-        key: ${{ env.pythonLocation }}-${{ hashFiles('dev-requirements.txt') }}
+        key: ${{ env.pythonLocation }}-${{ hashFiles('${{github.workspace}}/dev-requirements.txt') }}
 
     - name: Install Python Requirements ⭐️
       # update requirements
       run: |
-        pip install --upgrade --upgrade-strategy eager -r pip-requirements.txt
+        pip install --upgrade --upgrade-strategy eager -r ${{github.workspace}}/pip-requirements.txt
 
     - name: Checkout 🛎️
       # get repo
