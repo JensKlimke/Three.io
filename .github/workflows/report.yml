@@ -53,14 +53,18 @@ jobs:
       # create or load cache
       uses: actions/cache@v2
       with:
-        path: ${{ env.pythonLocation }}
-        key: ${{ env.pythonLocation }}-${{ hashFiles('${{github.workspace}}/dev-requirements.txt') }}
+        path: virt-env
+        key: virt_env-${{ hashFiles('pip-requirements.txt') }}
 
-    - name: Install Python Requirements ⭐️
-      # update requirements
+    - name: Setup Python Dependencies ⭐️
+      # setup python dependencies
       run: |
+        pwd
         ls -la
-        pip install --upgrade --upgrade-strategy eager -r ${{github.workspace}}/pip-requirements.txt
+        python3 -m venv virt-env
+        source virt-env/bin/activate
+        pip install -r pip-requirements.txt
+        deactivate
 
     - name: Checkout 🛎️
       # get repo
@@ -84,11 +88,11 @@ jobs:
       run: |
         cmake --build ${{github.workspace}}/build --target test
 
-#    - name: Generate Reports ✅
-#      # generate report
-#      working-directory: ${{github.workspace}}/build
-#      run: |
-#        cmake --build ${{github.workspace}}/build --target convert_jnb
+    - name: Generate Reports ✅
+      # generate report
+      run: |
+        source virt-env/bin/activate
+        jupyter nbconvert --execute --to html ${{github.workspace}}/build/test/ReportTest/notebook.ipynb
 
 #    - name: Archive Report 📦
 #      uses: actions/upload-artifact@v2
