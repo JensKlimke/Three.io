@@ -59,6 +59,7 @@ jobs:
     - name: Install Python Requirements ⭐️
       # update requirements
       run: |
+        ls -la
         pip install --upgrade --upgrade-strategy eager -r ${{github.workspace}}/pip-requirements.txt
 
     - name: Checkout 🛎️
