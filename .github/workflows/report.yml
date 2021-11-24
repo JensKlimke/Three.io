@@ -72,31 +72,30 @@ jobs:
 
     - name: Configure CMake 🛠
       # configure CMake project
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTING=ON -DBUILD_PROTOBUF_EXAMPLES=OFF
+      run: cmake -B ./build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTING=ON -DBUILD_PROTOBUF_EXAMPLES=OFF
 
     - name: Build 👷
       # build target
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      run: cmake --build ./build --config ${{env.BUILD_TYPE}}
 
     - name: Install 💥
       # install target
-      run: sudo cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target install
+      run: sudo cmake --build ./build --config ${{env.BUILD_TYPE}} --target install
 
     - name: Run Tests ✅
       # run tests
-      working-directory: ${{github.workspace}}/build
       run: |
-        cmake --build ${{github.workspace}}/build --target test
+        cmake --build ./build --target test
 
     - name: Generate Reports ✅
       # generate report
       run: |
         source virt-env/bin/activate
-        jupyter nbconvert --execute --to html ${{github.workspace}}/build/test/ReportTest/notebook.ipynb
+        jupyter nbconvert --execute --to html ./build/test/ReportTest/notebook.ipynb
 
-#    - name: Archive Report 📦
-#      uses: actions/upload-artifact@v2
-#      with:
-#        name: example-jupyter-report
-#        path: ${{github.workspace}}/build/test/ReportTest/notebook.html
+    - name: Archive Report 📦
+      uses: actions/upload-artifact@v2
+      with:
+        name: example-jupyter-report
+        path: ./build/test/ReportTest/notebook.html
 
