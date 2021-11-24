@@ -76,24 +76,23 @@ jobs:
 
     - name: Configure CMake 🛠
       # configure CMake project
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTING=ON -DBUILD_PROTOBUF_EXAMPLES=ON
+      run: cmake -B ./build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTING=ON -DBUILD_LIBRARY=ON -DBUILD_APP=ON -DBUILD_PROTOBUF_EXAMPLES=ON -DBUILD_REPORT_EXAMPLES=OFF
 
     - name: Build 👷
       # build target
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      run: cmake --build ./build --config ${{env.BUILD_TYPE}}
 
     - name: Install 💥
       # install target
-      run: sudo cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target install
+      run: sudo cmake --build ./build --config ${{env.BUILD_TYPE}} --target install
 
     - name: Module Tests ✅
       # run module tests
-      working-directory: ${{github.workspace}}/build
-      run: cmake --build ${{github.workspace}}/build --target test
+      run: cmake --build ./build --target test
 
     - name: Integration Test ✅
       # build app to check integration
-      working-directory: ${{github.workspace}}/test/application
+      working-directory: ./test/application
       run: |
         cmake -B ./build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         cmake --build ./build --config ${{env.BUILD_TYPE}}

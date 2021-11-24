@@ -20,10 +20,12 @@ This is my almost empty base cmake project, which I use for starting a new proje
 
 There are a few pre-defined CMake options in this project:
 
-* `BUILD_TESTING` (default `OFF`) - Enables gtest macros and the builds the tests (gtest must be installed on the system).
-* `ENABLE_COVERAGE` (default `OFF`) - Enables compiler flags to measure the code coverage (not measured in workflow).
-* `BUILD_APP` (default `OFF`) - Enables the example app (integrating the library) to be build.
-* `BUILD_PROTOBUF_EXAMPLES` (default `ON`) - The protobuf examples and tests are build when activated. 
+* `BUILD_TESTING=ON|OFF` (default `OFF`) - Sets or unsets the option to generate the test target (gtest must be installed on the system).
+* `ENABLE_COVERAGE=ON|OFF` (default `OFF`) - Enable the coverage check of the module (not measured in workflow).
+* `BUILD_LIBRARY=ON|OFF` (default `OFF`) - Enable the library to be build.
+* `BUILD_APP=ON|OFF` (default `ON`) - Enables the example app (integrating the library) to be build.
+* `BUILD_PROTOBUF_EXAMPLES=ON|OFF` (default `ON`) - The protobuf examples and tests are build when activated. 
+* `BUILD_REPORT_EXAMPLES=ON|OFF` (default `ON`) - Enable the report feature.
 
 ### Use act to simulate GitHub Action
 
@@ -35,7 +37,7 @@ There are a few pre-defined CMake options in this project:
 ## TODOs
 * [x] Create travis or gitflow workflow
 * [x] Add branch state to this README
-* [ ] Install and link library to test application
+* [x] Install and link library to test application
 * [ ] CMake Package
 * [ ] Auto-add release tag
  

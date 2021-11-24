@@ -63,24 +63,18 @@ jobs:
     - name: Setup Python Dependencies ⭐️
       # setup python dependencies
       run: |
-        pwd
-        ls -la
         python3 -m venv virt-env
         source virt-env/bin/activate
         pip install -r pip-requirements.txt
         deactivate
 
     - name: Configure CMake 🛠
-      # configure CMake project
-      run: cmake -B ./build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTING=ON -DBUILD_PROTOBUF_EXAMPLES=OFF
+      # configure CMake project (only report targets)
+      run: cmake -B ./build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTING=ON -DBUILD_PROTOBUF_EXAMPLES=OFF -DBUILD_LIBRARY=OFF
 
     - name: Build 👷
       # build target
       run: cmake --build ./build --config ${{env.BUILD_TYPE}}
-
-    - name: Install 💥
-      # install target
-      run: sudo cmake --build ./build --config ${{env.BUILD_TYPE}} --target install
 
     - name: Run Tests ✅
       # run tests
@@ -94,6 +88,7 @@ jobs:
         jupyter nbconvert --execute --to html ./build/test/ReportTest/notebook.ipynb
 
     - name: Archive Report 📦
+      # publish report as artifact
       uses: actions/upload-artifact@v2
       with:
         name: example-jupyter-report
