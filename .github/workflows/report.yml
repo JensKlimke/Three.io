@@ -49,16 +49,16 @@ jobs:
       with:
         python-version: 3.7
 
+    - name: Checkout 🛎️
+      # get repo
+      uses: actions/checkout@v2
+
     - name: Prepare Cache Python Packages ⭐️
       # create or load cache
       uses: actions/cache@v2
       with:
         path: virt-env
         key: virt_env-${{ hashFiles('pip-requirements.txt') }}
-
-    - name: Checkout 🛎️
-      # get repo
-      uses: actions/checkout@v2
 
     - name: Setup Python Dependencies ⭐️
       # setup python dependencies
