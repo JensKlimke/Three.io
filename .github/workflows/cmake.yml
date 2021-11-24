@@ -18,9 +18,9 @@ jobs:
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ${{ matrix.os }}
 
-      strategy:
-        matrix:
-          os: [ubuntu-20.04, macos-11]
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, macos-11]
 
     steps:
 
