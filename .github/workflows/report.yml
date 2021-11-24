@@ -1,8 +1,8 @@
-name: CMake
+name: Report
 
 on:
   push:
-    branches: [ master, feature-* ]
+    branches: [ master, feature-report ]
   pull_request:
     branches: [ master ]
 
@@ -45,55 +45,54 @@ jobs:
         sudo cp -a build/*.a /usr/lib
         rm -rf googletest*
 
-    - name: Cache Protobuf ⭐️
-      # create or load cache
-      id: cache-protobuf
-      uses: actions/cache@v2
+    - name: Setup Python ⭐️
+      # setup python
+      uses: actions/setup-python@v2
       with:
-        path: /tmp/protobuf
-        key: ${{ runner.os }}-protobuf
-
-    - name: Prepare Protobuf ⭐️
-      # install protobuf
-      working-directory: /tmp
-      if: steps.cache-protobuf.outputs.cache-hit != 'true'
-      run: |
-        git clone --depth 1 --branch v3.19.1 https://github.com/google/protobuf.git
-        cd protobuf && git submodule update --init --recursive && ./autogen.sh
-        ./configure && make && make check
-
-    - name: Install Protobuf ⭐️
-      # install cached protobuf
-      working-directory: /tmp
-      run: |
-        cd protobuf
-        sudo make install
-        sudo ldconfig
+        python-version: 3.7
 
     - name: Checkout 🛎️
       # get repo
       uses: actions/checkout@v2
 
+    - name: Prepare Cache Python Packages ⭐️
+      # create or load cache
+      uses: actions/cache@v2
+      with:
+        path: virt-env
+        key: virt_env-${{ hashFiles('pip-requirements.txt') }}
+
+    - name: Setup Python Dependencies ⭐️
+      # setup python dependencies
+      run: |
+        python3 -m venv virt-env
+        source virt-env/bin/activate
+        pip install -r pip-requirements.txt
+        deactivate
+
     - name: Configure CMake 🛠
-      # configure CMake project
-      run: cmake -B ./build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTING=ON -DBUILD_LIBRARY=ON -DBUILD_APP=ON -DBUILD_PROTOBUF_EXAMPLES=ON -DBUILD_REPORT_EXAMPLES=OFF
+      # configure CMake project (only report targets)
+      run: cmake -B ./build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTING=ON -DBUILD_PROTOBUF_EXAMPLES=OFF -DBUILD_LIBRARY=OFF
 
     - name: Build 👷
       # build target
       run: cmake --build ./build --config ${{env.BUILD_TYPE}}
 
-    - name: Install 💥
-      # install target
-      run: sudo cmake --build ./build --config ${{env.BUILD_TYPE}} --target install
-
-    - name: Module Tests ✅
-      # run module tests
-      run: cmake --build ./build --target test
-
-    - name: Integration Test ✅
-      # build app to check integration
-      working-directory: ./test/application
+    - name: Run Tests ✅
+      # run tests
       run: |
-        cmake -B ./build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-        cmake --build ./build --config ${{env.BUILD_TYPE}}
-        cd build/src && chmod +x app && ./app
+        cmake --build ./build --target test
+
+    - name: Generate Reports ✅
+      # generate report
+      run: |
+        source virt-env/bin/activate
+        jupyter nbconvert --execute --to html ./build/test/ReportTest/notebook.ipynb
+
+    - name: Archive Report 📦
+      # publish report as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: example-jupyter-report
+        path: ./build/test/ReportTest/notebook.html
+

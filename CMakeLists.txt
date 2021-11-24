@@ -7,11 +7,12 @@ project(Three.io VERSION 0.1.1)
 set(CMAKE_CXX_STANDARD 20)
 
 # set options
-option(BUILD_TESTING "Sets or unsets the option to generate the test target" OFF)
-option(ENABLE_COVERAGE "Enable the coverage check of the module" OFF)
-option(BUILD_APP "Enable the app to be build" OFF)
-option(BUILD_PROTOBUF_EXAMPLES "Enable the protobuf feature and build examples" ON)
-
+option(BUILD_TESTING "Sets or unsets the option to generate the test target." OFF)
+option(ENABLE_COVERAGE "Enable the coverage check of the module." OFF)
+option(BUILD_APP "Enables the example app (integrating the library) to be build." OFF)
+option(BUILD_LIBRARY "Enable the library to be build." ON)
+option(BUILD_PROTOBUF_EXAMPLES "The protobuf examples and tests are build when activated." ON)
+option(BUILD_REPORT_EXAMPLES "Enable the report feature." ON)
 
 # include directory
 include_directories(include)
@@ -28,11 +29,9 @@ include(GNUInstallDirs)
 
 # ------------------------------------------------------------------------------
 # core sources
+# - test folder is loaded automatically when BUILD_TESTING is enables
 # ------------------------------------------------------------------------------
 
 # add sources
 add_subdirectory(src)
 
-if(${BUILD_APP})
-    add_subdirectory(test/application)
-endif()
