@@ -56,7 +56,7 @@ jobs:
       working-directory: /tmp
       if: steps.cache-jupyter.outputs.cache-hit != 'true'
       run: |
-        apt-get install
+        jupyter notebook --version
 
     - name: Install Googletest ⭐️
       # install gtest
