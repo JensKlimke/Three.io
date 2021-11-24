@@ -10,7 +10,8 @@ This is my almost empty base cmake project, which I use for starting a new proje
 * ⭐️ GoogleTest enabled with CMake option and CMake macros
 * ⭐️ Coverage enabled with CMake option (e.g. for use in CLion)
 * ⭐ Sample application in test folder to link library against
-* ⭐ GitHub Actions workflow for build and test
+* ⭐ GitHub Actions workflow for build, test, installation, integration and test report generation
+* ⭐ Protobuf feature for serialization and deserialization of objects
 * ⭐ Test report generation (e.g. showing test data) with jupyter notebooks
 * ⭐ GitHub Pages deployment (https://jensklimke.github.io/Three.io/) 
 
