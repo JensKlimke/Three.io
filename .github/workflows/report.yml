@@ -1,0 +1,98 @@
+name: Report
+
+on:
+  push:
+    branches: [ feature-report ]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    # The CMake configure and build commands are platform-agnostic and should work equally
+    # well on Windows or Mac.  You can convert this to a matrix build if you need
+    # cross-platform coverage.
+    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+    runs-on: ubuntu-20.04
+
+    steps:
+
+    - name: Prepare Cache GoogleTest ⭐️
+      # create or load cache
+      id: cache-googletest
+      uses: actions/cache@v2
+      with:
+        path: /tmp/googletest
+        key: ${{ runner.os }}-googletest
+
+    - name: Prepare Googletest ⭐️
+      # build gtest
+      working-directory: /tmp
+      if: steps.cache-googletest.outputs.cache-hit != 'true'
+      run: |
+        git clone --depth 1 --branch release-1.6.0 https://github.com/google/googletest.git
+        cd googletest && mkdir build && cd build && cmake .. && make
+
+    - name: Install Googletest ⭐️
+      # install gtest
+      working-directory: /tmp
+      run: |
+        cd googletest
+        sudo cp -a include/gtest /usr/include
+        sudo cp -a build/*.a /usr/lib
+        rm -rf googletest*
+
+    - name: Prepare Cache Jupyter Notebook ⭐️
+      # create or load cache
+      id: cache-jupyter
+      uses: actions/cache@v2
+      with:
+        path: /tmp/jupyter
+        key: ${{ runner.os }}-jupyter
+
+    - name: Prepare Jupyter Notebook ⭐️
+      # build gtest
+      working-directory: /tmp
+      if: steps.cache-jupyter.outputs.cache-hit != 'true'
+      run: |
+        apt-get install
+
+    - name: Install Googletest ⭐️
+      # install gtest
+      working-directory: /tmp
+      run: |
+        cd googletest
+        sudo cp -a include/gtest /usr/include
+        sudo cp -a build/*.a /usr/lib
+        rm -rf googletest*
+
+    - name: Checkout 🛎️
+      # get repo
+      uses: actions/checkout@v2
+
+    - name: Configure CMake 🛠
+      # configure CMake project
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTING=ON -DBUILD_PROTOBUF_EXAMPLES=OFF
+
+    - name: Build 👷
+      # build target
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+    - name: Install 💥
+      # install target
+      run: sudo cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target install
+
+    - name: Module Tests ✅
+      # run module tests
+      working-directory: ${{github.workspace}}/build
+      run: |
+        cmake --build ${{github.workspace}}/build --target test
+        cmake --build ${{github.workspace}}/build --target convert_jnb
+
+    - name: Archive Report 📦
+      uses: actions/upload-artifact@v2
+      with:
+        name: example-jupyter-report
+        path: ${{github.workspace}}/build/test/ReportTest/notebook.html
+
