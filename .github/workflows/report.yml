@@ -43,29 +43,23 @@ jobs:
         sudo cp -a build/*.a /usr/lib
         rm -rf googletest*
 
-    - name: Prepare Cache Jupyter Notebook ⭐️
+    - name: Setup Python ⭐️
+      # setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+
+    - name: Prepare Cache Python Packages ⭐️
       # create or load cache
-      id: cache-jupyter
       uses: actions/cache@v2
       with:
-        path: /tmp/jupyter
-        key: ${{ runner.os }}-jupyter
+        path: ${{ env.pythonLocation }}
+        key: ${{ env.pythonLocation }}-${{ hashFiles('dev-requirements.txt') }}
 
-    - name: Prepare Jupyter Notebook ⭐️
-      # build gtest
-      working-directory: /tmp
-      if: steps.cache-jupyter.outputs.cache-hit != 'true'
+    - name: Install Python Requirements ⭐️
+      # update requirements
       run: |
-        pip install jupyterlab numpy matplotlib pandas
-
-    - name: Install Googletest ⭐️
-      # install gtest
-      working-directory: /tmp
-      run: |
-        cd googletest
-        sudo cp -a include/gtest /usr/include
-        sudo cp -a build/*.a /usr/lib
-        rm -rf googletest*
+        pip install --upgrade --upgrade-strategy eager -r pip-requirements.txt
 
     - name: Checkout 🛎️
       # get repo
@@ -83,16 +77,21 @@ jobs:
       # install target
       run: sudo cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target install
 
-    - name: Module Tests ✅
-      # run module tests
+    - name: Run Tests ✅
+      # run tests
       working-directory: ${{github.workspace}}/build
       run: |
         cmake --build ${{github.workspace}}/build --target test
-        cmake --build ${{github.workspace}}/build --target convert_jnb
 
-    - name: Archive Report 📦
-      uses: actions/upload-artifact@v2
-      with:
-        name: example-jupyter-report
-        path: ${{github.workspace}}/build/test/ReportTest/notebook.html
+#    - name: Generate Reports ✅
+#      # generate report
+#      working-directory: ${{github.workspace}}/build
+#      run: |
+#        cmake --build ${{github.workspace}}/build --target convert_jnb
+
+#    - name: Archive Report 📦
+#      uses: actions/upload-artifact@v2
+#      with:
+#        name: example-jupyter-report
+#        path: ${{github.workspace}}/build/test/ReportTest/notebook.html
 
