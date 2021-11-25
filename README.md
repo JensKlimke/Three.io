@@ -40,6 +40,7 @@ There are a few pre-defined CMake options in this project:
 * [x] Create travis or gitflow workflow
 * [x] Add branch state to this README
 * [x] Install and link library to test application
+* [ ] Deploy report to GitHub pages via doc branch
 * [ ] CMake Package
 * [ ] Auto-add release tag
  
