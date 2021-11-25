@@ -20,6 +20,8 @@
 // SOFTWARE.
 //
 
+#ifndef THREE_IO_MY_COMPLEX_H
+#define THREE_IO_MY_COMPLEX_H
 
 #include <iostream>
 
@@ -43,3 +45,5 @@ public:
     void load(const std::string &filename);
 
 };
+
+#endif // THREE_IO_MY_COMPLEX_H

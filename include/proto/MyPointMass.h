@@ -21,6 +21,9 @@
 //
 
 
+#ifndef THREE_IO_MY_POINT_MASS_H
+#define THREE_IO_MY_POINT_MASS_H
+
 #include <iostream>
 
 class MyPointMass {
@@ -46,3 +49,5 @@ public:
     void fromJSON(const std::string &json);
 
 };
+
+#endif // THREE_IO_MY_POINT_MASS_H
