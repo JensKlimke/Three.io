@@ -60,3 +60,6 @@ H4 -- Subsubsection
    :align:   center
 
    Proof that getting rich is mostly luck.
+
+
+`Link to Report <_reports/notebook.html>`_
