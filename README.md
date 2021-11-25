@@ -13,7 +13,7 @@ This is my almost empty base cmake project, which I use for starting a new proje
 * ⭐ GitHub Actions workflow for build, test, installation, integration and test report generation
 * ⭐ Protobuf feature for serialization and deserialization of objects
 * ⭐ Test report generation (e.g. showing test data) with jupyter notebooks
-* ⭐ GitHub Pages deployment (https://jensklimke.github.io/Three.io/) 
+* ⭐ GitHub Pages deployment (http://docdemo.jens-klimke.de/) 
 
 
 ## Instructions
