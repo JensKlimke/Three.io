@@ -60,7 +60,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: virt-env
-        key: virt_env-${{ hashFiles('pip-requirements.txt') }}
+        key: ${{ runner.os }}-python-${{ steps.setup-python.outputs.python-version }}-virt_env-${{ hashFiles('pip-requirements.txt') }}
 
     - name: Setup Python Dependencies ⭐️
       # setup python dependencies
